@@ -14,7 +14,7 @@ func check(e error) {
 }
 
 func main() {
-  filename := flag.String("filename", "history", "a filename to parse")
+  filename := flag.String("filename", "bash_history", "a filename to parse")
 
   flag.Parse()
 
@@ -26,7 +26,8 @@ func main() {
 	scanner := bufio.NewScanner(f)
 
   for scanner.Scan() {
-		fmt.Println(scanner.Text())
+    t := scanner.Text()
+    fmt.Println(t[0:1])
 	}
 
 	if err := scanner.Err(); err != nil {
