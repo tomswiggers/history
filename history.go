@@ -5,12 +5,23 @@ import (
     "fmt"
     "os"
     "flag"
+    "time"
+    "strconv"
 )
 
 func check(e error) {
     if e != nil {
         panic(e)
     }
+}
+
+func IsBufferTimestamp(buffer string) bool {
+
+  if len(buffer) > 0 && buffer[0:1] == "#" {
+    return true
+  }
+
+  return false
 }
 
 func main() {
@@ -26,8 +37,15 @@ func main() {
 	scanner := bufio.NewScanner(f)
 
   for scanner.Scan() {
-    t := scanner.Text()
-    fmt.Println(t[0:1])
+    buffer := scanner.Text()
+
+    if IsBufferTimestamp(buffer) {
+      timestamp, _ := strconv.ParseInt(buffer[1:len(buffer)], 10, 64)
+      tm := time.Unix(timestamp, 0)
+      fmt.Print(tm, " ")
+    } else {
+      fmt.Println(buffer)
+    }
 	}
 
 	if err := scanner.Err(); err != nil {
